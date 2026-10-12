@@ -1,0 +1,19 @@
+
+html[data-bs-theme="dark"] {
+  color-scheme: dark;
+
+  --bs-body-bg: #10141c;
+  --bs-body-color: #e9eef5;
+}
+
+html {
+  min-height: 100%;
+  background-color: #10141c;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  background-color: var(--bs-body-bg);
+  color: var(--bs-body-color);
+}
