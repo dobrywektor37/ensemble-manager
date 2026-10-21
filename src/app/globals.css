@@ -1,19 +1,353 @@
 
-html[data-bs-theme="dark"] {
-  color-scheme: dark;
+/* ==========================================
+   ENSEMBLE MANAGER
+   BLACK / RED — RAZOR THEME
+   ========================================== */
 
-  --bs-body-bg: #10141c;
-  --bs-body-color: #e9eef5;
+/* 1. Kolory i konfiguracja Bootstrapa */
+
+:root {
+  --em-black: #08090b;
+  --em-surface: #161619;
+  --em-red: #e81737;
+  --em-red-hover: #ff2848;
+  --em-border: #303035;
+  --em-white: #f5f5f5;
+  --em-muted: #d5d6dc;
 }
 
 html {
   min-height: 100%;
-  background-color: #10141c;
+  background-color: var(--em-black);
 }
 
-body {
+html[data-bs-theme="dark"] {
+  color-scheme: dark;
+
+  --bs-body-bg: var(--em-black);
+  --bs-body-color: var(--em-white);
+
+  --bs-primary: var(--em-red);
+  --bs-primary-rgb: 232, 23, 55;
+  --bs-border-color: var(--em-border);
+
+  --bs-border-radius: 0;
+  --bs-border-radius-sm: 0;
+  --bs-border-radius-lg: 0;
+  --bs-border-radius-xl: 0;
+}
+
+/* 2. Tło strony */
+
+html[data-bs-theme="dark"] body {
+  position: relative;
   min-height: 100vh;
   margin: 0;
-  background-color: var(--bs-body-bg);
-  color: var(--bs-body-color);
+  overflow-x: hidden;
+
+  color: var(--em-white);
+
+  background:
+          radial-gradient(
+                  circle at 15% 12%,
+                  rgba(232, 23, 55, 0.08),
+                  transparent 24%
+          ),
+          radial-gradient(
+                  circle at 85% 80%,
+                  rgba(232, 23, 55, 0.06),
+                  transparent 18%
+          ),
+          var(--em-black);
 }
+
+/* 3. Czerwone rozdarcia na tle strony */
+
+html[data-bs-theme="dark"] body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+
+  opacity: 0.45;
+  mix-blend-mode: screen;
+
+  background:
+          linear-gradient(
+                  132deg,
+                  transparent 0% 66%,
+                  rgba(255, 40, 72, 0.10) 66.7%,
+                  rgba(255, 40, 72, 0.55) 67.1%,
+                  rgba(255, 40, 72, 0.12) 67.5%,
+                  transparent 68.1%
+          ),
+          linear-gradient(
+                  132deg,
+                  transparent 0% 57%,
+                  rgba(255, 40, 72, 0.08) 57.8%,
+                  rgba(255, 40, 72, 0.45) 58.2%,
+                  rgba(255, 40, 72, 0.10) 58.6%,
+                  transparent 59.2%
+          ),
+          linear-gradient(
+                  132deg,
+                  transparent 0% 74%,
+                  rgba(255, 40, 72, 0.08) 74.8%,
+                  rgba(255, 40, 72, 0.40) 75.2%,
+                  rgba(255, 40, 72, 0.10) 75.6%,
+                  transparent 76.2%
+          );
+}
+
+/* Delikatna czerwona poświata */
+
+html[data-bs-theme="dark"] body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+
+  background:
+          radial-gradient(
+                  circle at 35% 35%,
+                  rgba(232, 23, 55, 0.05),
+                  transparent 28%
+          ),
+          radial-gradient(
+                  circle at 70% 65%,
+                  rgba(232, 23, 55, 0.04),
+                  transparent 26%
+          );
+}
+
+/* Treść nad tłem */
+
+html[data-bs-theme="dark"] body > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* 4. Typografia */
+
+h1,
+h2,
+h3,
+h4 {
+  letter-spacing: -0.035em;
+}
+
+h1 {
+  font-weight: 800;
+}
+
+/* 5. Sekcja HERO */
+
+.em-hero {
+  position: relative;
+  isolation: isolate;
+}
+
+/* Czerwone pazury / błyskawice */
+
+.em-hero::before {
+  content: "";
+  position: absolute;
+  inset: -40px -40px -30px;
+  z-index: -1;
+  pointer-events: none;
+
+  opacity: 0.85;
+
+  background:
+          radial-gradient(
+                  circle at 50% 32%,
+                  rgba(232, 23, 55, 0.10),
+                  transparent 34%
+          ),
+
+          linear-gradient(
+                  115deg,
+                  transparent 0 34%,
+                  rgba(255, 45, 75, 0.02) 34.2% 34.8%,
+                  rgba(255, 45, 75, 0.85) 35.05% 35.35%,
+                  rgba(255, 45, 75, 0.03) 35.7% 36.2%,
+                  transparent 36.6% 100%
+          ),
+
+          linear-gradient(
+                  115deg,
+                  transparent 0 44%,
+                  rgba(255, 45, 75, 0.02) 44.2% 44.8%,
+                  rgba(255, 45, 75, 0.90) 45.05% 45.35%,
+                  rgba(255, 45, 75, 0.03) 45.7% 46.2%,
+                  transparent 46.6% 100%
+          ),
+
+          linear-gradient(
+                  115deg,
+                  transparent 0 54%,
+                  rgba(255, 45, 75, 0.02) 54.2% 54.8%,
+                  rgba(255, 45, 75, 0.85) 55.05% 55.35%,
+                  rgba(255, 45, 75, 0.03) 55.7% 56.2%,
+                  transparent 56.6% 100%
+          );
+
+  filter: drop-shadow(
+          0 0 12px rgba(232, 23, 55, 0.20)
+  );
+}
+
+/* Bez poziomych czerwonych kresek */
+
+.em-hero::after,
+.em-hero h1::after {
+  content: none;
+  display: none;
+}
+
+/* 6. Czytelniejszy opis pod nagłówkiem */
+
+.em-hero .lead.text-secondary {
+  font-size: clamp(1.15rem, 2.5vw, 1.4rem);
+  font-weight: 400;
+  line-height: 1.65;
+
+  color: var(--em-muted) !important;
+
+  text-shadow:
+          0 2px 14px rgba(0, 0, 0, 0.9);
+}
+
+/* 7. Karty */
+
+.card {
+  --bs-card-bg: var(--em-surface);
+  --bs-card-color: var(--em-white);
+  --bs-card-border-color: var(--em-border);
+  --bs-card-border-radius: 0;
+
+  border-left: 3px solid var(--em-red);
+
+  background:
+          linear-gradient(
+                  180deg,
+                  rgba(255, 255, 255, 0.02),
+                  rgba(255, 255, 255, 0.01)
+          ),
+          var(--em-surface);
+
+  box-shadow:
+          0 0 0 1px rgba(255, 255, 255, 0.03);
+
+  transition:
+          border-color 0.2s ease,
+          transform 0.2s ease,
+          box-shadow 0.2s ease;
+}
+
+@media (hover: hover) {
+  .card:hover {
+    border-color: var(--em-red);
+
+    transform: translateY(-3px);
+
+    box-shadow:
+            0 0 0 1px rgba(232, 23, 55, 0.35),
+            0 14px 30px rgba(0, 0, 0, 0.35),
+            0 0 24px rgba(232, 23, 55, 0.08);
+  }
+}
+
+/* 8. Przyciski */
+
+.btn {
+  border-radius: 0 !important;
+  font-weight: 700;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
+
+  transition:
+          background-color 0.2s ease,
+          border-color 0.2s ease,
+          color 0.2s ease;
+}
+
+.btn-primary {
+  --bs-btn-bg: var(--em-red);
+  --bs-btn-border-color: var(--em-red);
+  --bs-btn-color: #fff;
+
+  --bs-btn-hover-bg: var(--em-red-hover);
+  --bs-btn-hover-border-color: var(--em-red-hover);
+  --bs-btn-hover-color: #fff;
+
+  --bs-btn-active-bg: #bd102a;
+  --bs-btn-active-border-color: #bd102a;
+
+  --bs-btn-focus-shadow-rgb: 232, 23, 55;
+}
+
+.btn-outline-light {
+  --bs-btn-color: var(--em-white);
+  --bs-btn-border-color: var(--em-red);
+
+  --bs-btn-hover-bg: var(--em-red);
+  --bs-btn-hover-border-color: var(--em-red);
+  --bs-btn-hover-color: #fff;
+}
+
+/* 9. Etykiety */
+
+.badge {
+  border-radius: 0 !important;
+  padding: 0.55em 0.9em;
+
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.badge.text-bg-primary {
+  background-color: var(--em-red) !important;
+  color: #fff !important;
+}
+
+/* 10. Formularze */
+
+.form-control,
+.form-select {
+  border-radius: 0;
+  background-color: var(--em-surface);
+  border-color: var(--em-border);
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--em-red);
+
+  box-shadow:
+          0 0 0 0.2rem rgba(232, 23, 55, 0.15);
+}
+
+/* 11. Zaznaczanie tekstu */
+
+::selection {
+  background: var(--em-red);
+  color: #fff;
+}
+
+/* 12. Dostępność — ograniczenie animacji */
+
+@media (prefers-reduced-motion: reduce) {
+  .btn,
+  .card {
+    transition: none;
+  }
+
+  .card:hover {
+    transform: none;
+  }
+}
+

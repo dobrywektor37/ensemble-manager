@@ -1,16 +1,20 @@
 
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useState, type SyntheticEvent } from "react";
+import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
+
 export default function LoginPage() {
+    const router = useRouter();
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
 
-    async function handleLogin(event: FormEvent<HTMLFormElement>) {
+    async function handleLogin(event: SyntheticEvent<HTMLFormElement>) {
         event.preventDefault();
 
         setError("");
@@ -32,8 +36,9 @@ export default function LoginPage() {
             }
 
 
-            // Po zalogowaniu otwieramy chronione API.
-            window.location.assign("/api/events");
+            // Po zalogowaniu przechodzimy do panelu zespołu.
+            router.replace("/dashboard");
+            router.refresh();
         } catch {
             setError("Wystąpił problem z połączeniem.");
         } finally {

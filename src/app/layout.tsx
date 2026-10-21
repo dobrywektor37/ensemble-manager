@@ -25,6 +25,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <html
           lang="pl"
           data-bs-theme="dark"
+          data-scroll-behavior="smooth"
           className={`${geistSans.variable} ${geistMono.variable}`}
       >
       <body>{children}</body>
