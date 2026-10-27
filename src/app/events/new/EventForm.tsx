@@ -3,6 +3,10 @@
 
 import { useState, type SyntheticEvent } from "react";
 import { useRouter } from "next/navigation";
+import {
+    toWarsawDateTimeLocal,
+    warsawLocalToUtc,
+} from "@/lib/warsaw-time";
 
 type EventType = "rehearsal" | "concert" | "other";
 
@@ -17,34 +21,6 @@ type EventFormProps = {
         description: string | null;
     };
 };
-
-// Zamiana czasu z Supabase na polska date
-// do wyswietlenia w polu datetime-local.
-function toWarsawDateTimeLocal(value: string): string {
-    const parts = new Intl.DateTimeFormat("en-GB", {
-        timeZone: "Europe/Warsaw",
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-        hour: "2-digit",
-        minute: "2-digit",
-        hourCycle: "h23",
-    }).formatToParts(new Date(value));
-
-    const get = (type: string) =>
-        parts.find((part) => part.type === type)?.value ?? "";
-
-    return (
-        `${get("year")}-${get("month")}-${get("day")}` +
-        `T${get("hour")}:${get("minute")}`
-    );
-}
-
-// ISO 8601 bez milisekund.
-// Format jest akceptowany przez POST oraz PATCH naszego API.
-function toApiDate(date: Date): string {
-    return date.toISOString().replace(/\.\d{3}Z$/, "Z");
-}
 
 export default function EventForm({
                                       initialEvent,
@@ -122,20 +98,36 @@ export default function EventForm({
             return;
         }
 
-        // datetime-local jest interpretowane wedlug
-        // strefy czasowej przegladarki.
-        const startDate = new Date(startsAt);
-        const endDate = new Date(endsAt);
+        // Interpretujemy daty w Europe/Warsaw, niezależnie od
+        // strefy czasowej przeglądarki użytkownika.
+        let startIso: string;
+        let endIso: string;
 
-        if (
-            Number.isNaN(startDate.getTime()) ||
-            Number.isNaN(endDate.getTime())
-        ) {
-            setError("Podano nieprawidłową datę.");
+        try {
+            // Przy edycji zachowujemy dokładny moment UTC,
+            // gdy pole daty nie zostało zmienione. Jest to ważne
+            // podczas jesiennego cofnięcia zegarów.
+            startIso =
+                initialEvent &&
+                startsAt === toWarsawDateTimeLocal(initialEvent.starts_at)
+                    ? initialEvent.starts_at
+                    : warsawLocalToUtc(startsAt);
+
+            endIso =
+                initialEvent &&
+                endsAt === toWarsawDateTimeLocal(initialEvent.ends_at)
+                    ? initialEvent.ends_at
+                    : warsawLocalToUtc(endsAt);
+        } catch {
+            setError(
+                "Nieprawidłowa lub niejednoznaczna godzina " +
+                "w polskiej strefie czasowej. " +
+                "Sprawdź datę i zmianę czasu."
+            );
             return;
         }
 
-        if (endDate.getTime() <= startDate.getTime()) {
+        if (Date.parse(endIso) <= Date.parse(startIso)) {
             setError(
                 "Data zakończenia musi być późniejsza " +
                 "niż data rozpoczęcia."
@@ -166,8 +158,8 @@ export default function EventForm({
         const payload = {
             title: trimmedTitle,
             type: eventType,
-            starts_at: toApiDate(startDate),
-            ends_at: toApiDate(endDate),
+            starts_at: startIso,
+            ends_at: endIso,
             location: trimmedLocation || null,
             description: trimmedDescription || null,
         };
@@ -340,8 +332,8 @@ export default function EventForm({
             </div>
 
             <p className="text-body-secondary small mb-4">
-                Wpisz daty i godziny według czasu lokalnego.
-                Aplikacja zapisze je w formacie UTC.
+                Podaj daty i godziny według czasu polskiego
+                (Europe/Warsaw). Aplikacja przeliczy je na UTC.
             </p>
 
             {/* Lokalizacja */}
